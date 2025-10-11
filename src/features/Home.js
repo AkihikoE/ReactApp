@@ -1,18 +1,24 @@
-import { Fragment, useState } from "react";
-
-import data from "../app/data";
+import { Fragment, useState} from "react";
 import Product from "./Product"
 import AddForm from "./Product/AddForm";
-
+import axios from "axios";
 let currentProductId = 9;
 
+
 function Home() {
-    const [products, setProducts] = useState(data);
+    const [products, setProducts] = useState([]);
 
     function addProduct(product) {
         const newProduct = { id: ++currentProductId, ...product };
         setProducts([...products, newProduct]);
     }
+    async function getProducts() {
+        const products = await axios.get(
+            'https://68e9fdbaf1eeb3f856e5ae48.mockapi.io/products'
+        );
+        setProducts(products.data);
+    }
+    getProducts();
     return (
         <Fragment>
             <h1>New Products</h1>
